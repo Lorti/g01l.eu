@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const Graphics = ({ value }) => {
+const Graphics = ({ stroke, leftStrokeColor, rightStrokeColor }) => {
     const width = 640;
     const height = 360;
     const fontSize = 72;
@@ -19,7 +19,7 @@ const Graphics = ({ value }) => {
     };
     const frontLayerStyle = {};
     const backLayerStyle = {
-        strokeWidth: value
+        strokeWidth: stroke
     };
 
     return (
@@ -31,11 +31,11 @@ const Graphics = ({ value }) => {
                 </radialGradient>
                 <linearGradient id="fillGradient">
                     <stop offset="5%" stopColor="#fff"/>
-                    <stop offset="95%" stopColor="#ddd"/>
+                    <stop offset="95%" stopColor="#fff"/>
                 </linearGradient>
                 <linearGradient id="strokeGradient">
-                    <stop offset="5%" stopColor="blue"/>
-                    <stop offset="95%" stopColor="purple"/>
+                    <stop offset="5%" stopColor={leftStrokeColor}/>
+                    <stop offset="95%" stopColor={rightStrokeColor}/>
                 </linearGradient>
             </defs>
             <rect x="0" y="0" width={width} height={height} fill="url(#radialGradient)" style={backgroundStyle}/>
@@ -48,7 +48,7 @@ const Graphics = ({ value }) => {
 };
 
 Graphics.propTypes = {
-    value: PropTypes.number.isRequired
+    stroke: PropTypes.number.isRequired
 };
 
 export default Graphics;

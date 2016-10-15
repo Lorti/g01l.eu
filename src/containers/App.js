@@ -4,32 +4,56 @@ import Graphics from '../components/Graphics';
 
 
 
-
-const changeSliderAction = (value) => ({
-    type: 'CHANGE_STROKE',
+const changeColorAction = (value) => ({
+    type: 'CHANGE_LEFT_STROKE_COLOR',
     value
 });
 
-const Slider = ({ value, onSliderChange }) => {
+const changeRightStrokeColorAction = (value) => ({
+    type: 'CHANGE_RIGHT_STROKE_COLOR',
+    value
+});
+
+const changeSliderAction = (value) => ({
+    type: 'CHANGE_STROKE_WIDTH',
+    value
+});
+
+const Slider = ({ stroke, leftStrokeColor, rightStrokeColor, onRightStrokeColorChange, onColorChange, onSliderChange }) => {
     return (
         <form>
-            <input type="range" min="0" max="20" step="1"
-                   value={value}
-                   onChange={(event) => onSliderChange(event.target.value)}
-            />
-            {value}
+            <label>
+                <input type="color"
+                       value={leftStrokeColor}
+                       onChange={(event) => onColorChange(event.target.value)}
+                />
+            </label>
+            <label>
+                <input type="color"
+                       value={rightStrokeColor}
+                       onChange={(event) => onRightStrokeColorChange(event.target.value)}
+                />
+            </label>
+            <label>
+                <input type="range" min="0" max="20" step="1"
+                       value={stroke}
+                       onChange={(event) => onSliderChange(event.target.value)}
+                />
+            </label>
         </form>
     )
 };
 
-const mapStateToProps = (state) => {
-    return {
-        value: state.stroke
-    };
-};
+const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onColorChange: (value) => {
+            dispatch(changeColorAction(value))
+        },
+        onRightStrokeColorChange: (value) => {
+            dispatch(changeRightStrokeColorAction(value))
+        },
         onSliderChange: (value) => {
             dispatch(changeSliderAction(value))
         }
@@ -48,20 +72,17 @@ const Style = connect(
 
 
 
-const Canvas = ({ value }) => {
+const Canvas = (state) => {
     return (
         <div>
-            <Graphics value={value} />
+            <Graphics {...state} />
+            <p>{JSON.stringify(state)}</p>
         </div>
     )
 };
 
 const Result = connect(
-    (state) => {
-        return {
-            value: state.stroke
-        }
-    },
+    (state) => state,
 )(Canvas);
 
 
