@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }) => {
     const width = 640;
@@ -44,10 +44,6 @@ const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }
             </g>
         </svg>
     );
-};
-
-Graphics.propTypes = {
-    stroke: PropTypes.number.isRequired
 };
 
 export default Graphics;

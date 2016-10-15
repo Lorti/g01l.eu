@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Graphics from '../components/Graphics';
-
+import { browserHistory } from 'react-router';
 
 
 const changeTextAction = (value) => ({
@@ -32,7 +32,7 @@ const Slider = (state) => {
             <label>
                 <input type="text"
                        value={state.textString}
-                       onInput={(event) => state.onTextChange(event.target.value)}
+                       onChange={(event) => state.onTextChange(event.target.value)}
                 />
             </label>
             <label>
@@ -57,20 +57,27 @@ const Slider = (state) => {
     )
 };
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state, params) => {
+    if (params.textString) {
+        return Object.assign({}, state, { textString: params.textString });
+    }
+    return state;
+};
+
 const mapDispatchToProps = (dispatch) => {
     return {
         onTextChange: (value) => {
-            dispatch(changeTextAction(value))
+            dispatch(changeTextAction(value));
+            browserHistory.replace('/' + value);
         },
         onLeftStrokeColorChange: (value) => {
-            dispatch(changeColorAction(value))
+            dispatch(changeColorAction(value));
         },
         onRightStrokeColorChange: (value) => {
-            dispatch(changeRightStrokeColorAction(value))
+            dispatch(changeRightStrokeColorAction(value));
         },
         onStrokeWidthChange: (value) => {
-            dispatch(changeStrokeWidthAction(value))
+            dispatch(changeStrokeWidthAction(value));
         }
     };
 };
@@ -92,16 +99,18 @@ const Canvas = (state) => {
 };
 
 const Result = connect(
-    (state) => state,
+    mapStateToProps,
 )(Canvas);
 
 
 
-const App = () => (
-    <div>
-        <Style />
-        <Result />
-    </div>
-);
+const App = ({ params }) => {
+    return (
+        <div>
+            <Style {...params} />
+            <Result {...params} />
+        </div>
+    );
+};
 
 export default App;
