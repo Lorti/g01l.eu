@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 
-const Graphics = ({ stroke, leftStrokeColor, rightStrokeColor }) => {
+const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }) => {
     const width = 640;
     const height = 360;
     const fontSize = 72;
-    const textString = 'R34ct 1s g01l';
     const x = width / 2;
     const y = fontSize + (height - fontSize * 1.2) / 2;
 
@@ -19,7 +18,7 @@ const Graphics = ({ stroke, leftStrokeColor, rightStrokeColor }) => {
     };
     const frontLayerStyle = {};
     const backLayerStyle = {
-        strokeWidth: stroke
+        strokeWidth: strokeWidth
     };
 
     return (

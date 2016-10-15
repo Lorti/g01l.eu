@@ -4,6 +4,11 @@ import Graphics from '../components/Graphics';
 
 
 
+const changeTextAction = (value) => ({
+    type: 'CHANGE_TEXT_STRING',
+    value
+});
+
 const changeColorAction = (value) => ({
     type: 'CHANGE_LEFT_STROKE_COLOR',
     value
@@ -14,30 +19,38 @@ const changeRightStrokeColorAction = (value) => ({
     value
 });
 
-const changeSliderAction = (value) => ({
+const changeStrokeWidthAction = (value) => ({
     type: 'CHANGE_STROKE_WIDTH',
     value
 });
 
-const Slider = ({ stroke, leftStrokeColor, rightStrokeColor, onRightStrokeColorChange, onColorChange, onSliderChange }) => {
+
+
+const Slider = (state) => {
     return (
         <form>
             <label>
-                <input type="color"
-                       value={leftStrokeColor}
-                       onChange={(event) => onColorChange(event.target.value)}
+                <input type="text"
+                       value={state.textString}
+                       onInput={(event) => state.onTextChange(event.target.value)}
                 />
             </label>
             <label>
                 <input type="color"
-                       value={rightStrokeColor}
-                       onChange={(event) => onRightStrokeColorChange(event.target.value)}
+                       value={state.leftStrokeColor}
+                       onChange={(event) => state.onLeftStrokeColorChange(event.target.value)}
                 />
             </label>
             <label>
-                <input type="range" min="0" max="20" step="1"
-                       value={stroke}
-                       onChange={(event) => onSliderChange(event.target.value)}
+                <input type="color"
+                       value={state.rightStrokeColor}
+                       onChange={(event) => state.onRightStrokeColorChange(event.target.value)}
+                />
+            </label>
+            <label>
+                <input type="range" min="0" max="30" step="1"
+                       value={state.strokeWidth}
+                       onChange={(event) => state.onStrokeWidthChange(event.target.value)}
                 />
             </label>
         </form>
@@ -45,17 +58,19 @@ const Slider = ({ stroke, leftStrokeColor, rightStrokeColor, onRightStrokeColorC
 };
 
 const mapStateToProps = (state) => state;
-
 const mapDispatchToProps = (dispatch) => {
     return {
-        onColorChange: (value) => {
+        onTextChange: (value) => {
+            dispatch(changeTextAction(value))
+        },
+        onLeftStrokeColorChange: (value) => {
             dispatch(changeColorAction(value))
         },
         onRightStrokeColorChange: (value) => {
             dispatch(changeRightStrokeColorAction(value))
         },
-        onSliderChange: (value) => {
-            dispatch(changeSliderAction(value))
+        onStrokeWidthChange: (value) => {
+            dispatch(changeStrokeWidthAction(value))
         }
     };
 };
@@ -64,11 +79,6 @@ const Style = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Slider);
-
-
-
-
-
 
 
 
@@ -84,10 +94,6 @@ const Canvas = (state) => {
 const Result = connect(
     (state) => state,
 )(Canvas);
-
-
-
-
 
 
 
