@@ -22,7 +22,7 @@ const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }
     };
 
     return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+        <svg className="graphics" width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
             <defs>
                 <radialGradient id="radialGradient" fx="35%" fy="50%" cx="50%" cy="50%" r="65%">
                     <stop offset="5%" stopColor="#555"/>
@@ -37,7 +37,7 @@ const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }
                     <stop offset="95%" stopColor={rightStrokeColor}/>
                 </linearGradient>
             </defs>
-            <rect x="0" y="0" width={width} height={height} fill="url(#radialGradient)" style={backgroundStyle}/>
+            {/*<rect x="0" y="0" width={width} height={height} fill="url(#radialGradient)" style={backgroundStyle}/>*/}
             <g style={groupStyle}>
                 <text x={x} y={y} stroke="url(#strokeGradient)" style={backLayerStyle}>{textString}</text>
                 <text x={x} y={y} fill="url(#fillGradient)" style={frontLayerStyle}>{textString}</text>

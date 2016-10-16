@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Graphics from '../components/Graphics';
-import { browserHistory } from 'react-router';
 
 
 const changeTextAction = (value) => ({
@@ -57,10 +56,7 @@ const Slider = (state) => {
     )
 };
 
-const mapStateToProps = (state, params) => {
-    if (params.textString) {
-        return Object.assign({}, state, { textString: params.textString });
-    }
+const mapStateToProps = (state) => {
     return state;
 };
 
@@ -68,7 +64,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onTextChange: (value) => {
             dispatch(changeTextAction(value));
-            browserHistory.replace('/' + value);
         },
         onLeftStrokeColorChange: (value) => {
             dispatch(changeColorAction(value));
@@ -90,27 +85,53 @@ const Style = connect(
 
 
 const Canvas = (state) => {
+    const url = 'http://' + ([
+        document.location.host,
+        encodeURIComponent(state.textString),
+        encodeURIComponent(state.leftStrokeColor),
+        encodeURIComponent(state.rightStrokeColor),
+        encodeURIComponent(state.strokeWidth)
+    ].join('/'));
     return (
         <div>
             <Graphics {...state} />
-            <p>{JSON.stringify(state)}</p>
+            <p><a href={url}>Tell everyone, that <strong>{state.textString}</strong>!</a></p>
         </div>
     )
 };
 
 const Result = connect(
-    mapStateToProps,
+    mapStateToProps
 )(Canvas);
 
 
+class App extends Component {
+    componentDidMount() {
+        const { params } = this.props;
+        if (params.textString) {
+            this.props.onTextChange(params.textString);
+        }
+        if (params.leftStrokeColor) {
+            this.props.onLeftStrokeColorChange(params.leftStrokeColor);
+        }
+        if (params.rightStrokeColor) {
+            this.props.onRightStrokeColorChange(params.rightStrokeColor);
+        }
+        if (params.strokeWidth) {
+            this.props.onStrokeWidthChange(params.strokeWidth);
+        }
+    }
+    render() {
+        return (
+            <div>
+                <Style />
+                <Result />
+            </div>
+        );
+    }
+}
 
-const App = ({ params }) => {
-    return (
-        <div>
-            <Style {...params} />
-            <Result {...params} />
-        </div>
-    );
-};
-
-export default App;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
