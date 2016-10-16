@@ -41,7 +41,8 @@ const store = createStore(style, window.__REDUX_DEVTOOLS_EXTENSION__ && window._
 render(
     <Provider store={store}>
         <Router history={browserHistory}>
-            <Route path="/(:textString)/(:leftStrokeColor)/(:rightStrokeColor)/(:strokeWidth)" component={App} />
+            <Route path="/(:textString)/(:fontSize)/(:leftStrokeColor)/(:rightStrokeColor)/(:strokeWidth)" component={App} />
+            <Route path="/(:textString)" component={App} />
             <Route path="*" component={App} />
         </Router>
     </Provider>,

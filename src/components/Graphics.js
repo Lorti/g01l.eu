@@ -1,9 +1,8 @@
 import React from 'react';
 
-const Graphics = ({ textString, strokeWidth, leftStrokeColor, rightStrokeColor }) => {
+const Graphics = ({ textString, fontSize, strokeWidth, leftStrokeColor, rightStrokeColor }) => {
     const width = 640;
     const height = 360;
-    const fontSize = 72;
     const x = width / 2;
     const y = fontSize + (height - fontSize * 1.2) / 2;
 

@@ -8,6 +8,11 @@ const changeTextAction = (value) => ({
     value
 });
 
+const changeFontSizeAction = (value) => ({
+    type: 'CHANGE_FONT_SIZE',
+    value
+});
+
 const changeColorAction = (value) => ({
     type: 'CHANGE_LEFT_STROKE_COLOR',
     value
@@ -35,6 +40,12 @@ const Slider = (state) => {
                 />
             </label>
             <label>
+                <input type="range" min="50" max="75" step="1"
+                       value={state.fontSize}
+                       onChange={(event) => state.onFontSizeChange(event.target.value)}
+                />
+            </label>
+            <label>
                 <input type="color"
                        value={state.leftStrokeColor}
                        onChange={(event) => state.onLeftStrokeColorChange(event.target.value)}
@@ -47,7 +58,7 @@ const Slider = (state) => {
                 />
             </label>
             <label>
-                <input type="range" min="0" max="30" step="1"
+                <input type="range" min="5" max="25" step="1"
                        value={state.strokeWidth}
                        onChange={(event) => state.onStrokeWidthChange(event.target.value)}
                 />
@@ -64,6 +75,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onTextChange: (value) => {
             dispatch(changeTextAction(value));
+        },
+        onFontSizeChange: (value) => {
+            dispatch(changeFontSizeAction(value));
         },
         onLeftStrokeColorChange: (value) => {
             dispatch(changeColorAction(value));
@@ -88,6 +102,7 @@ const Canvas = (state) => {
     const url = 'http://' + ([
         document.location.host,
         encodeURIComponent(state.textString),
+        encodeURIComponent(state.fontSize),
         encodeURIComponent(state.leftStrokeColor),
         encodeURIComponent(state.rightStrokeColor),
         encodeURIComponent(state.strokeWidth)
@@ -95,7 +110,7 @@ const Canvas = (state) => {
     return (
         <div>
             <Graphics {...state} />
-            <p><a href={url}>Tell everyone, that <strong>{state.textString}</strong>!</a></p>
+            <p><a href={url}>{url}</a></p>
         </div>
     )
 };
@@ -110,6 +125,9 @@ class App extends Component {
         const { params } = this.props;
         if (params.textString) {
             this.props.onTextChange(params.textString);
+        }
+        if (params.fontSize) {
+            this.props.onFontSizeChange(params.fontSize);
         }
         if (params.leftStrokeColor) {
             this.props.onLeftStrokeColorChange(params.leftStrokeColor);
