@@ -1,71 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Graphics from '../components/Graphics';
+import {
+    changeTextAction, changeFontSizeAction,
+    changeLeftStrokeColorAction, changeRightStrokeColorAction,
+    changeStrokeWidthAction
+} from '../actions/index';
 
-
-const changeTextAction = (value) => ({
-    type: 'CHANGE_TEXT_STRING',
-    value
-});
-
-const changeFontSizeAction = (value) => ({
-    type: 'CHANGE_FONT_SIZE',
-    value
-});
-
-const changeColorAction = (value) => ({
-    type: 'CHANGE_LEFT_STROKE_COLOR',
-    value
-});
-
-const changeRightStrokeColorAction = (value) => ({
-    type: 'CHANGE_RIGHT_STROKE_COLOR',
-    value
-});
-
-const changeStrokeWidthAction = (value) => ({
-    type: 'CHANGE_STROKE_WIDTH',
-    value
-});
-
-
-
-const Slider = (state) => {
-    return (
-        <form>
-            <label>
-                <input type="text"
-                       value={state.textString}
-                       onChange={(event) => state.onTextChange(event.target.value)}
-                />
-            </label>
-            <label>
-                <input type="range" min="50" max="75" step="1"
-                       value={state.fontSize}
-                       onChange={(event) => state.onFontSizeChange(event.target.value)}
-                />
-            </label>
-            <label>
-                <input type="color"
-                       value={state.leftStrokeColor}
-                       onChange={(event) => state.onLeftStrokeColorChange(event.target.value)}
-                />
-            </label>
-            <label>
-                <input type="color"
-                       value={state.rightStrokeColor}
-                       onChange={(event) => state.onRightStrokeColorChange(event.target.value)}
-                />
-            </label>
-            <label>
-                <input type="range" min="5" max="25" step="1"
-                       value={state.strokeWidth}
-                       onChange={(event) => state.onStrokeWidthChange(event.target.value)}
-                />
-            </label>
-        </form>
-    )
-};
 
 const mapStateToProps = (state) => {
     return state;
@@ -80,7 +21,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(changeFontSizeAction(value));
         },
         onLeftStrokeColorChange: (value) => {
-            dispatch(changeColorAction(value));
+            dispatch(changeLeftStrokeColorAction(value));
         },
         onRightStrokeColorChange: (value) => {
             dispatch(changeRightStrokeColorAction(value));
@@ -90,34 +31,6 @@ const mapDispatchToProps = (dispatch) => {
         }
     };
 };
-
-const Style = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Slider);
-
-
-
-const Canvas = (state) => {
-    const url = 'http://' + ([
-        document.location.host,
-        encodeURIComponent(state.textString),
-        encodeURIComponent(state.fontSize),
-        encodeURIComponent(state.leftStrokeColor),
-        encodeURIComponent(state.rightStrokeColor),
-        encodeURIComponent(state.strokeWidth)
-    ].join('/'));
-    return (
-        <div>
-            <Graphics {...state} />
-            <p><a href={url}>{url}</a></p>
-        </div>
-    )
-};
-
-const Result = connect(
-    mapStateToProps
-)(Canvas);
 
 
 class App extends Component {
@@ -140,10 +53,51 @@ class App extends Component {
         }
     }
     render() {
+        const state = this.props;
+        const url = 'http://' + ([
+            document.location.host,
+            encodeURIComponent(state.textString),
+            encodeURIComponent(state.fontSize),
+            encodeURIComponent(state.leftStrokeColor),
+            encodeURIComponent(state.rightStrokeColor),
+            encodeURIComponent(state.strokeWidth)
+        ].join('/'));
         return (
             <div>
-                <Style />
-                <Result />
+                <form>
+                    <label>
+                        <input type="text"
+                               value={state.textString}
+                               onChange={(event) => state.onTextChange(event.target.value)}
+                        />
+                    </label>
+                    <label>
+                        <input type="range" min="50" max="75" step="1"
+                               value={state.fontSize}
+                               onChange={(event) => state.onFontSizeChange(event.target.value)}
+                        />
+                    </label>
+                    <label>
+                        <input type="color"
+                               value={state.leftStrokeColor}
+                               onChange={(event) => state.onLeftStrokeColorChange(event.target.value)}
+                        />
+                    </label>
+                    <label>
+                        <input type="color"
+                               value={state.rightStrokeColor}
+                               onChange={(event) => state.onRightStrokeColorChange(event.target.value)}
+                        />
+                    </label>
+                    <label>
+                        <input type="range" min="5" max="25" step="1"
+                               value={state.strokeWidth}
+                               onChange={(event) => state.onStrokeWidthChange(event.target.value)}
+                        />
+                    </label>
+                </form>
+                <p><a href={url}>{url}</a></p>
+                <Graphics {...state} />
             </div>
         );
     }

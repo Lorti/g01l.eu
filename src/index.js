@@ -7,11 +7,12 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import App from './containers/App';
 import reducer from './reducers/style';
+import { CHANGE_TEXT_STRING } from './actions/index';
 
 import 'normalize.css';
 
 const logger = store => next => action => {
-    if (action.type === 'CHANGE_TEXT_STRING') {
+    if (action.type === CHANGE_TEXT_STRING) {
         document.title = action.value;
     }
     return next(action);

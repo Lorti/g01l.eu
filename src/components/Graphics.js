@@ -6,7 +6,6 @@ const Graphics = ({ textString, fontSize, strokeWidth, leftStrokeColor, rightStr
     const x = width / 2;
     const y = fontSize + (height - fontSize * 1.2) / 2;
 
-    const backgroundStyle = {};
     const groupStyle = {
         overflow: 'hidden',
         textAnchor: 'middle',
@@ -15,18 +14,15 @@ const Graphics = ({ textString, fontSize, strokeWidth, leftStrokeColor, rightStr
         fontFamily: '"Arial Black", "Arial Bold", Gadget, sans-serif',
         letterSpacing: -7
     };
-    const frontLayerStyle = {};
+
     const backLayerStyle = {
         strokeWidth: strokeWidth
     };
+    const frontLayerStyle = {};
 
     return (
         <svg className="graphics" width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
             <defs>
-                <radialGradient id="radialGradient" fx="35%" fy="50%" cx="50%" cy="50%" r="65%">
-                    <stop offset="5%" stopColor="#555"/>
-                    <stop offset="95%" stopColor="#333"/>
-                </radialGradient>
                 <linearGradient id="fillGradient">
                     <stop offset="5%" stopColor="#fff"/>
                     <stop offset="95%" stopColor="#fff"/>
@@ -36,7 +32,6 @@ const Graphics = ({ textString, fontSize, strokeWidth, leftStrokeColor, rightStr
                     <stop offset="95%" stopColor={rightStrokeColor}/>
                 </linearGradient>
             </defs>
-            {/*<rect x="0" y="0" width={width} height={height} fill="url(#radialGradient)" style={backgroundStyle}/>*/}
             <g style={groupStyle}>
                 <text x={x} y={y} stroke="url(#strokeGradient)" style={backLayerStyle}>{textString}</text>
                 <text x={x} y={y} fill="url(#fillGradient)" style={frontLayerStyle}>{textString}</text>
